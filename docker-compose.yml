@@ -50,6 +50,10 @@ services:
 
   zulip:
     image: "zulip/docker-zulip:${ZULIP_VERSION}"
+  command: >
+    bash -c "
+      sed -i 's/EXTERNAL_HOST = \"zulip.example.com\"/ /etc/zulip/settings.py
+    "
     restart: unless-stopped
     build:
       context: .
