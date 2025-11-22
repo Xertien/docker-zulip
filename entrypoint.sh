@@ -141,9 +141,14 @@ setConfigurationValue() {
             VALUE="$KEY = $2"
             ;;
         string | *)
-            VALUE="$KEY = '${2//\'/\'}'"
+            VALUE="$KEY = '${2//\'/\'}"
             ;;
     esac
+    # Remove existing lines that define this variable to avoid conflicts
+    if [ -f "$SETTINGS_PY" ]; then
+        sed -i "/^$KEY[[:space:]]*=/d" "$SETTINGS_PY"
+        sed -i "/^$KEY[[:space:]]*+=/d" "$SETTINGS_PY"
+    fi
     echo "$VALUE" >>"$SETTINGS_PY"
     echo "Setting key \"$KEY\", type \"$TYPE\"."
 }
@@ -377,8 +382,6 @@ initialConfiguration() {
     if [ "$MANUAL_CONFIGURATION" = "False" ]; then
         # Start with the settings template file.
         cp -a /home/zulip/deployments/current/zproject/prod_settings_template.py "$SETTINGS_PY"
-        # Remove default EXTERNAL_HOST line to avoid conflicts
-        sed -i '/^EXTERNAL_HOST = "zulip\.example\.com"/d' "$SETTINGS_PY"
         databaseConfiguration
         secretsConfiguration
         authenticationBackends
