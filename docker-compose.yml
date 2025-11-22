@@ -92,8 +92,6 @@ services:
     volumes:
       - "zulip:/data:rw"
       - /etc/zulip/saml/idps/keycloak.crt:/etc/zulip/saml/idps/keycloak.crt:ro
-      - /etc/zulip/saml/zulip-cert.crt:/etc/zulip/saml/zulip-cert.crt:ro
-      - /etc/zulip/saml/zulip-private-key.key:/etc/zulip/saml/zulip-private-key.key:ro
     ulimits:
       nofile:
         soft: 1000000
