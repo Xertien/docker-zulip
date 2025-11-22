@@ -90,6 +90,7 @@ services:
       ZULIP_AUTH_BACKENDS: ${ZULIP_AUTH_BACKENDS}
     volumes:
       - "zulip:/data:rw"
+      - /etc/zulip/saml/idps/keycloak.crt:/etc/zulip/saml/idps/keycloak.crt:ro
     ulimits:
       nofile:
         soft: 1000000
