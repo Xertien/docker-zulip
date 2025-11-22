@@ -141,14 +141,9 @@ setConfigurationValue() {
             VALUE="$KEY = $2"
             ;;
         string | *)
-            VALUE="$KEY = '${2//\'/\'}"
+            VALUE="$KEY = '${2//\'/\'}'"
             ;;
     esac
-    # Remove existing lines that define this variable to avoid conflicts
-    if [ -f "$SETTINGS_PY" ]; then
-        sed -i "/^$KEY[[:space:]]*=/d" "$SETTINGS_PY"
-        sed -i "/^$KEY[[:space:]]*+=/d" "$SETTINGS_PY"
-    fi
     echo "$VALUE" >>"$SETTINGS_PY"
     echo "Setting key \"$KEY\", type \"$TYPE\"."
 }
