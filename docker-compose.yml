@@ -88,9 +88,12 @@ services:
       SETTING_SOCIAL_AUTH_SAML_ORG_INFO: ${SETTING_SOCIAL_AUTH_SAML_ORG_INFO}
       SETTING_SOCIAL_AUTH_SAML_ENABLED_IDPS: ${SETTING_SOCIAL_AUTH_SAML_ENABLED_IDPS}
       ZULIP_AUTH_BACKENDS: ${ZULIP_AUTH_BACKENDS}
+      SETTING_SOCIAL_AUTH_SAML_SECURITY_CONFIG: ${SETTING_SOCIAL_AUTH_SAML_SECURITY_CONFIG}
     volumes:
       - "zulip:/data:rw"
       - /etc/zulip/saml/idps/keycloak.crt:/etc/zulip/saml/idps/keycloak.crt:ro
+      - /etc/zulip/saml/zulip-cert.crt:/etc/zulip/saml/zulip-cert.crt:ro
+      - /etc/zulip/saml/zulip-private-key.key:/etc/zulip/saml/zulip-private-key.key:ro
     ulimits:
       nofile:
         soft: 1000000
