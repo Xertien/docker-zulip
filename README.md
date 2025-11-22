@@ -1,4 +1,25 @@
-# 1. ENV
+# 1. Database Configuration
+
+### `POSTGRES_DB`
+
+**Description:** PostgreSQL database name.
+**Example:** `zulip`
+
+---
+
+### `POSTGRES_USER`
+
+**Description:** PostgreSQL username.
+**Example:** `zulip`
+
+---
+
+### `POSTGRES_PASSWORD`
+
+**Description:** PostgreSQL password.
+**Example:** `supersecretpg`
+
+---
 
 ### `DB_HOST`
 
@@ -214,8 +235,8 @@ Your SAML IdP (Keycloak) configuration.
 ```json
 {
   "keycloak": {
-    "entity_id": "https://auth.example.com/realms/phenix-private",
-    "url": "https://auth.example.com/realms/phenix-private/protocol/saml",
+    "entity_id": "https://auth.example.com/realms/exemple_realms",
+    "url": "https://auth.example.com/realms/exemple_realms/protocol/saml",
     "display_name": "Example Auth",
     "attr_email": "email",
     "attr_username": "email",
@@ -235,31 +256,61 @@ Keycloak’s public certificate must be mounted at:
 ### Example `.env`
 
 ```env
+# Database
+POSTGRES_DB=zulip
 POSTGRES_USER=zulip
 POSTGRES_PASSWORD=supersecretpg
+
+# Email
 SECRETS_EMAIL_PASSWORD=gmail-app-pass
-RABBITMQ_DEFAULT_PASS=rabbitpass
-MEMCACHED_PASSWORD=
-REDIS_PASSWORD=
-ZULIP_SECRET_KEY=ZULIP_SECRET_123456
-SOCIAL_AUTH_GOOGLE_SECRET=GOOGLESECRET123
-LOADBALANCER_IPS=172.18.0.5
-
-SETTING_EXTERNAL_HOST=chat.example.com
-SETTING_ZULIP_ADMINISTRATOR=admin@example.com
-
 SETTING_EMAIL_HOST=smtp.gmail.com
 SETTING_EMAIL_HOST_USER=bot@example.com
 SETTING_EMAIL_PORT=587
 SETTING_EMAIL_USE_SSL=false
 SETTING_EMAIL_USE_TLS=true
 
+# RabbitMQ
+RABBITMQ_DEFAULT_USER=guest
+RABBITMQ_DEFAULT_PASS=rabbitpass
+
+# Cache & Queues
+MEMCACHED_PASSWORD=
+REDIS_PASSWORD=
+
+# Security & Secrets
+ZULIP_SECRET_KEY=ZULIP_SECRET_123456
+SECRETS_EMAIL_PASSWORD=gmail-app-pass
+SOCIAL_AUTH_GOOGLE_SECRET=GOOGLESECRET123
+LOADBALANCER_IPS=172.18.0.5
+
+# Zulip Server Configuration
+SETTING_EXTERNAL_HOST=chat.example.com
+SETTING_ZULIP_ADMINISTRATOR=admin@example.com
+
+# Google OAuth2
 SETTING_SOCIAL_AUTH_GOOGLE_KEY=12345.apps.googleusercontent.com
 
+# SAML Configuration
 SETTING_SOCIAL_AUTH_SAML_ORG_INFO={"fr-FR": {"displayname": "Example Chat", "name": "example-chat", "url": "https://chat.example.com"}}
-SETTING_SOCIAL_AUTH_SAML_ENABLED_IDPS={"keycloak": {"entity_id": "https://auth.example.com/realms/phenix-private", "url": "https://auth.example.com/realms/phenix-private/protocol/saml", "display_name": "Phénix Auth", "attr_email": "email", "attr_username": "email", "attr_first_name": "first_name", "attr_last_name": "last_name", "attr_user_permanent_id": "email", "auto_signup": true}}
+SETTING_SOCIAL_AUTH_SAML_ENABLED_IDPS={"keycloak": {"entity_id": "https://auth.example.com/realms/exemple_realms", "url": "https://auth.example.com/realms/REALMSNAME/protocol/saml", "display_name": "ExempleName", "attr_email": "email", "attr_username": "email", "attr_first_name": "first_name", "attr_last_name": "last_name", "attr_user_permanent_id": "email", "auto_signup": true}}
+SETTING_SOCIAL_AUTH_SAML_SP_ENTITY_ID=https://chat.example.com
 
-ZULIP_AUTH_BACKENDS=EmailAuthBackend,zproject.backends.SAMLAuthBackend
+# Services
+SETTING_ZULIP_SERVICE_PUSH_NOTIFICATIONS=true
+SETTING_ZULIP_SERVICE_SUBMIT_USAGE_STATISTICS=false
+
+# Build & Versioning
+ZULIP_VERSION=latest
+ZULIP_GIT_URL=https://github.com/zulip/zulip.git
+ZULIP_GIT_REF=main
+
+# Network / HTTPS
 DISABLE_HTTPS=true
 SSL_CERTIFICATE_GENERATION=self-signed
+SMTP_PORT=25:25
+HTTP_PORT=80:80
+HTTPS_PORT=443:443
+
+# Authentication Backends
+ZULIP_AUTH_BACKENDS=EmailAuthBackend,GoogleAuthBackend,SAMLAuthBackend
 ```
